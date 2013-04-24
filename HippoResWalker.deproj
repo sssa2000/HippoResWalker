@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="utf-8"?>
+<project>
+  <file>
+    <filename>HippoResInfo_GUI.lua</filename>
+  </file>
+  <file>
+    <filename>HippoResWalker.lua</filename>
+  </file>
+  <file>
+    <filename>Hippo_BptWalker.lua</filename>
+  </file>
+  <file>
+    <filename>Hippo_ChrWalker.lua</filename>
+  </file>
+  <file>
+    <filename>Hippo_DmlWalker.lua</filename>
+  </file>
+  <file>
+    <filename>Hippo_EffWalker.lua</filename>
+  </file>
+  <file>
+    <filename>Hippo_MatWalker.lua</filename>
+  </file>
+  <file>
+    <filename>Hippo_SpeWalker.lua</filename>
+  </file>
+  <file>
+    <filename>Hippo_TplWalker.lua</filename>
+  </file>
+  <file>
+    <filename>OutPutInfo.lua</filename>
+  </file>
+  <file>
+    <filename>ProcessRelativePath.lua</filename>
+  </file>
+</project>

@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<project>
+  <command>C:\Program Files (x86)\Lua\5.1\wlua.exe</command>
+  <working_directory>C:\Users\sssa2000\Desktop\HippoResWalker\</working_directory>
+  <symbols_directory></symbols_directory>
+  <command_arguments>C:\Users\sssa2000\Desktop\HippoResWalker\HippoResInfo_GUI.lua</command_arguments>
+  <scc>
+    <provider></provider>
+    <user></user>
+    <project_name></project_name>
+    <local_path></local_path>
+    <aux_project_path></aux_project_path>
+  </scc>
+</project>
