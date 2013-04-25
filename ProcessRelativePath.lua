@@ -21,7 +21,9 @@ function relpath_validator(relpath)
 	--只接受 ../resources 和 ../data
 	local t00=string.match(relpath,"(\.\.[/\\]resources)[/\\].+")
 	local t01=string.match(relpath,"(\.\.[/\\]data)[/\\].+")
-	local t1=t01 or t00
+	local t10=string.match(relpath,"(\.\.[/\\]resources_kucun)[/\\].+")
+	local t11=string.match(relpath,"(\.\.[/\\]resources_daishen)[/\\].+")
+	local t1=t01 or t00 or t10 or t11
 	if(t1==nil) then
 		error(string.format("不合法的相对路径:%s",relpath))
 		return false
@@ -58,12 +60,16 @@ function getFullPathFromRelpath(relpath,rootRespath,bProcessNotExisitFile)
     --捕获resources之前的字符串
     local t00=string.match(rootRespath,"(.-[/\\])resources[/\\].+")
 	local t01=string.match(rootRespath,"(.-[/\\])data[/\\].+")
-	local t1=t01 or t00
+	local t10=string.match(rootRespath,"(.-[/\\])resources[/\\].+")
+	local t11=string.match(rootRespath,"(.-[/\\])resources[/\\].+")
+	local t1=t01 or t00 or t01 or t11
 
 	if(t1) then
 		local t02=string.match(relpath,".-[/\\](resources[/\\].+)")
 		local t03=string.match(relpath,".-[/\\](data[/\\].+)")
-		local t2= t02 or t03
+		local t04=string.match(relpath,".-[/\\](resources[/\\].+)")
+		local t05=string.match(relpath,".-[/\\](resources[/\\].+)")
+		local t2= t02 or t03 or t04 or t05
 
 		if(t2==nil) then
 			--relpath中没有包含路径，例如只写了1.mat。此时只需要加上顶层资源的路径即可

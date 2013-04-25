@@ -104,8 +104,9 @@ end
 menu_item_open = iup.item {title = "Open"}
 menu_item_exit = iup.item {title = "Exit"}
 menu_item_about= iup.item {title = "About"}
+menu_item_test= iup.item {title = "压力测试"}
 menu_file = iup.menu {menu_item_open,menu_item_exit}
-menu_help = iup.menu {menu_item_about}
+menu_help = iup.menu {menu_item_about,menu_item_test}
 
 
 
@@ -113,10 +114,28 @@ submenu_file = iup.submenu {menu_file; title = "File"}
 submenu_help = iup.submenu {menu_help; title = "Help"}
 menu_bar = iup.menu {submenu_file, submenu_help}
 
+function menu_item_test:action()
+--[[
+    local filedlg = iup.filedlg{
+        dialogtype = "DIR",
+        title = "选择要压力测试的目录", 
+        directory=".\\"} 
+    filedlg:popup (iup.ANYWHERE, iup.ANYWHERE)
+	status = filedlg.status
+	if status == "0" then
+		dotest_dir(filedlg.value)
+	end
+--]]
+    local res,dirpath=iup.GetParam("要压力测试的目录", nil,"填写目录: %s\n","")
+    if(res==1) then
+       dotest_dir(filedlg.value)
+    end
 
+	return iup.DEFAULT
+end
 
 function menu_item_open:action()
-	filedlg = iup.filedlg{dialogtype = "OPEN", title = "OPEN",
+	local filedlg = iup.filedlg{dialogtype = "OPEN", title = "OPEN",
 						  filter = "*.*", filterinfo = "*.*",
 						  directory=".\\"}
 	filedlg:popup (iup.ANYWHERE, iup.ANYWHERE)
@@ -224,9 +243,7 @@ end
 
 
 --dialog
-
 dlg = iup.dialog{ container; title = "HippoResInfo", menu=menu_bar,dragdrop=1}
-
 dlg:showxy (iup.CENTER, iup.CENTER)
 
 
@@ -234,11 +251,8 @@ dlg:showxy (iup.CENTER, iup.CENTER)
 --call back of dialog's dragdrop
 
 function dlg:dropfiles_cb(filename , num , x, y)
-
     print(filename , num , x, y)
-
     UpdateTree(filename,tree_control)
-
 end
 
 
@@ -256,21 +270,6 @@ end
 
 
 
-
-
---test_GetResRelativeFile_DML()
-
-
-
-
-
---查找一个资源所有的相关文件
-
---返回1个table
-
-function GetResRelativeFile(resPath)
-
-end
 
 
 

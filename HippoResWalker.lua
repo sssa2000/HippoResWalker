@@ -9,6 +9,7 @@ dofile("Hippo_EffWalker.lua")
 dofile("Hippo_SpeWalker.lua")
 dofile("Hippo_BptWalker.lua")
 dofile( "OutPutInfo.lua")
+require "lfs"
 --[[
 解析一个文件
 返回1：文件中资源引用的table
@@ -40,3 +41,20 @@ function HippoParseFile(filename)
 
 	return restable,failed_str
 end
+
+function dotest_dir(dirpath)
+	for file in lfs.dir(dirpath) do
+        if file ~= "." and file ~= ".." then
+            local f = dirpath..'/'..file
+            local attr = lfs.attributes (f)
+            assert (type(attr) == "table")
+            if attr.mode == "directory" then
+                dotest_dir (f)
+            else
+                HippoParseFile(dirpath..'/'..file)
+            end
+        end
+    end    
+end
+
+--dotest_dir("D:\\X52Demo\\resources\\art\\stage\\")
