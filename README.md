@@ -3,7 +3,7 @@ HippoResWalker
 
 ##简介
 	Hippo Resource Walker 是用来查看文本资源引用关系的一个小工具。使用Lua编写。纯粹是学习Lua练手的产物。
-	![Image text](https://github.com/sssa2000/HippoResWalker/scrrenshot/hippo.png)
+	![](http://github.com/sssa2000/HippoResWalker/blob/master/screenshot/hippo.jpg)
 ##截图
 
 
