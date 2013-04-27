@@ -116,10 +116,11 @@ Tpl
 --]]
 function GetResRelativeFile_Mat(matfn,matname)
 	local res_table={}
+	local res_reson
 	if(IsFileExisit(matfn)==false) then
-        --error("Mat文件不合法，找不到H3DMaterialInstance结点:" .. matfn )
-		OutPutError("Mat文件不存在:" .. matfn )	
-	    return res_table
+        res_reson="can not find mat file on disk:" .. matfn
+        OutPutError(res_reson)
+	    return res_table,res_reson
 	end
 	
 	local xfile = xml.load(matfn)
@@ -142,7 +143,7 @@ function GetResRelativeFile_Mat(matfn,matname)
 		end
 	end
 	OutPutInfo("成功解析mat相关文件:" .. matfn)
-	return res_table
+	return res_table,res_reson
 end
 
 

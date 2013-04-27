@@ -46,6 +46,11 @@ end
 function GetResRelativeFile_DML(dmlPath)
 	local res_table={}
 	local res_reson=nil
+    if(IsFileExisit(dmlPath)==false) then
+        res_reson="can not find dml file on disk:" .. dmlPath
+        OutPutError(res_reson)
+	    return res_table,res_reson
+	end
 	SetCurFn(dmlPath)
 	io.input(dmlPath)
 	local t=io.read("*all")

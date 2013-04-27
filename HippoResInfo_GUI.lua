@@ -86,7 +86,31 @@ function r_updatetree(_table,tree,btoplevel)
 	end
 end
 
-
+function get_all_files(dirpath,totalfileRes)
+	for file in lfs.dir(dirpath) do
+        if file ~= "." and file ~= ".." then
+            local f = dirpath..'/'..file
+            local attr = lfs.attributes (f)
+            assert (type(attr) == "table")
+            if attr.mode == "directory" then
+                get_all_files (f,totalfileRes)
+            else
+                table.insert(totalfileRes,dirpath..'/'..file)
+            end
+        end
+    end
+    return totalfileRes
+end
+function dotest_dir(totalfile)
+    local finished=0
+    local tot=table.getn(totalfile)
+    for k,fpath in pairs(totalfile) do
+        local t=HippoParseFile(fpath)
+        finished=finished+1 
+        coroutine.yield(t,finished/tot)
+    end
+return 1
+end
 
 function UpdateTree(fn,tree)
 	ClearTree(tree)
@@ -127,8 +151,21 @@ function menu_item_test:action()
 	end
 --]]
     local res,dirpath=iup.GetParam("要压力测试的目录", nil,"填写目录: %s\n","")
-    if(res==1) then
-       dotest_dir(filedlg.value)
+    if(res==true) then
+        ClearTree(tree_control)
+        local allfiles={}
+        get_all_files(dirpath,allfiles)
+        local co=coroutine.create(dotest_dir)
+        local b,t,percent--=coroutine.resume(co,allfiles)
+        while coroutine.status(co)~="dead" do
+            prog_control.VALUE =percent
+	        b,t,percent=coroutine.resume(co,allfiles)
+	        if(not b) then
+	            OutPutInfo("测试意外退出，原因：" .. tostring(t))
+	        end
+       end
+       local msg=string.format("完成Test,目录:%s,共处理文件数量%d",dirpath,table.getn(allfiles))
+       OutPutInfo(msg)
     end
 
 	return iup.DEFAULT

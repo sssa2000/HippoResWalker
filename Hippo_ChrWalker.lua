@@ -6,6 +6,11 @@ dofile( "Hippo_DmlWalker.lua")
 function GetResRelativeFile_Chr(chrPath)
 	local res_table={}
 	local res_reson=nil
+    if(IsFileExisit(chrPath)==false) then
+        res_reson="can not find chr file on disk:" .. chrPath
+        OutPutError(res_reson)
+	    return res_table,res_reson
+	end		
 	SetCurFn(chrPath)
 	io.input(chrPath)
 	local filecontent=io.read("*all")

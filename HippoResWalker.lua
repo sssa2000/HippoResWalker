@@ -42,19 +42,6 @@ function HippoParseFile(filename)
 	return restable,failed_str
 end
 
-function dotest_dir(dirpath)
-	for file in lfs.dir(dirpath) do
-        if file ~= "." and file ~= ".." then
-            local f = dirpath..'/'..file
-            local attr = lfs.attributes (f)
-            assert (type(attr) == "table")
-            if attr.mode == "directory" then
-                dotest_dir (f)
-            else
-                HippoParseFile(dirpath..'/'..file)
-            end
-        end
-    end    
-end
+
 
 --dotest_dir("D:\\X52Demo\\resources\\art\\stage\\")
