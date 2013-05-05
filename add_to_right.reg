@@ -1,0 +1,4 @@
+Windows Registry Editor Version 5.00
+
+[HKEY_CLASSES_ROOT\*\Shell\”√ HippoResWalker\Command]
+@="\"C:\\Program Files (x86)\\Lua\\5.1\\wlua.exe\" \"C:\\Users\\sssa2000\\Desktop\\HippoResWalker\\HippoResInfo_GUI.lua\" \"%1\""

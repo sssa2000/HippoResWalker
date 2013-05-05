@@ -42,6 +42,7 @@ function GetResRelativeFile_Eff(efffn)
     restable["Shader"]=shader_res
     restable["模型粒子"]=dml_res
     OutPutInfo("成功解析eff相关文件:" .. efffn)
+    io.close()
     return restable,errstr
 end
 

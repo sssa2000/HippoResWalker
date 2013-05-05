@@ -67,5 +67,6 @@ function GetResRelativeFile_Spe(spefn)
 	end
 
     OutPutInfo("成功解析eff相关文件:" .. spefn)
+    io.close()
     return restable,errstr
 end

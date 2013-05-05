@@ -35,6 +35,7 @@ function GetResRelativeFile_Chr(chrPath)
 	--解析材质三元组部分
 	ParseFile_MatInfo(filecontent,res_table)
 	
+	io.close()
 	return res_table,res_reson
 end
 

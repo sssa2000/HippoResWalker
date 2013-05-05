@@ -19,6 +19,6 @@ function GetResRelativeFile_Bpt(filename)
         local fullpath=getFullPathFromRelpath(fn,GetCurFn(),true)
         table.insert(res_table,fullpath)
     end
-
+    io.close()
 	return res_table,res_reson
 end

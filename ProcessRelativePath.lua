@@ -9,6 +9,7 @@ function SetCurFn(fn)
     _currentProcessFileName=fn
 end
 
+
 --验证一个相对路径的合法性
 function relpath_validator(relpath)
 	--允许这样的文件名:没有斜杠的，例如:1.mat

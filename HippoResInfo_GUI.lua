@@ -1,14 +1,11 @@
 
 require( "iuplua" )
 require( "iupluacontrols" )
+require( "HippoResWalkerDll")
 dofile( "HippoResWalker.lua" )
 dofile( "OutPutInfo.lua")
 
-
 local shell_arg=arg[1]
-
-test_path="D:\\X52Demo\\resources\\art\\stage\\beach001\\Model\\beach001_boat001.dml"
-
 
 
 --gui lay out
@@ -30,13 +27,17 @@ local container=iup.vbox
 
 
 function ui_OutputInfo(str)
-    list_control.INSERTITEM1="Info >: ".. str
+    if(str~=nil) then
+        list_control.INSERTITEM1="Info >:  ".. str
+    end
 end
 
 
 function ui_OutputError(str)
     --list_control.FGCOLOR="255 0 0"
-    list_control.INSERTITEM1="Error>: ".. str
+    if(str~=nil) then
+        list_control.INSERTITEM1="Error>:  ".. str
+    end
 end
 
 --让所有的输出信息都定位到ui的函数中
@@ -71,46 +72,6 @@ function ClearTree(tree)
 end
 
 
-function r_updatetree(_table,tree,btoplevel)
-	for k,v in pairs(_table) do
-	    if(btoplevel==1) then
-	        tree.addbranch = tostring(k)
-	    else
-	        tree.addbranch1 = tostring(k)
-	    end
-		if(type(v)=="string") then
-			tree.addleaf1 = v
-		else
-			r_updatetree(v,tree,0)
-		end
-	end
-end
-
-function get_all_files(dirpath,totalfileRes)
-	for file in lfs.dir(dirpath) do
-        if file ~= "." and file ~= ".." then
-            local f = dirpath..'/'..file
-            local attr = lfs.attributes (f)
-            assert (type(attr) == "table")
-            if attr.mode == "directory" then
-                get_all_files (f,totalfileRes)
-            else
-                table.insert(totalfileRes,dirpath..'/'..file)
-            end
-        end
-    end
-    return totalfileRes
-end
-function dotest_dir(totalfile)
-    local finished=0
-    local tot=table.getn(totalfile)
-    for k,fpath in pairs(totalfile) do
-        local t=HippoParseFile(fpath)
-        finished=finished+1 
-        coroutine.yield(t,finished/tot)
-    end
-return 1
-end
 
 function UpdateTree(fn,tree)
 	ClearTree(tree)
@@ -125,46 +86,100 @@ end
 
 --main menu
 
-menu_item_open = iup.item {title = "Open"}
-menu_item_exit = iup.item {title = "Exit"}
-menu_item_about= iup.item {title = "About"}
-menu_item_test= iup.item {title = "压力测试"}
-menu_file = iup.menu {menu_item_open,menu_item_exit}
-menu_help = iup.menu {menu_item_about,menu_item_test}
+local menu_item_open = iup.item {title = "Open File"}
+local menu_item_exit = iup.item {title = "Exit"}
+local menu_item_about= iup.item {title = "About"}
+local menu_item_test= iup.item {title = "压力测试"}
+local menu_item_addtoright= iup.item {title = "添加到Explorer右键菜单"}
 
 
+local menu_file = iup.menu {menu_item_open,menu_item_exit}
+local menu_tool = iup.menu {menu_item_test,menu_item_addtoright}
+local menu_help = iup.menu {menu_item_about}
 
 submenu_file = iup.submenu {menu_file; title = "File"}
+submenu_tool = iup.submenu {menu_tool; title = "Tool"}
 submenu_help = iup.submenu {menu_help; title = "Help"}
-menu_bar = iup.menu {submenu_file, submenu_help}
+menu_bar = iup.menu {submenu_file, submenu_tool,submenu_help}
+
+function menu_item_addtoright:action()
+
+    --首先把arg[0] arg[1]的斜杠变成双斜杠
+    local luaexepath=string.gsub(arg[-1],"\\","\\\\")
+    local scriptpath=string.gsub(arg[0],"\\","\\\\")
+    --构建1个reg文件，执行它
+    --reg文件的语法实在是太......
+    local regfile_content=string.format("Windows Registry Editor Version 5.00\n\
+[HKEY_CLASSES_ROOT\\*\\Shell\\用 HippoResWalker\\Command]\
+@=\"\\\"%s\\\" \\\"%s\\\" \\\"%%1\\\"\"\n ",luaexepath,scriptpath)
+
+    OutPutInfo(regfile_content)
+    
+    io.output("./right_menu.reg")
+    io.write(regfile_content)
+    io.close()
+    
+    OutPutInfo("保存reg文件成功: right_menu.reg")
+    
+    os.execute("regedit ./right_menu.reg")
+end
+local stresstest_dir=nil
+local stress_result_num=0
+
+local stresstest_co
+
+function sync_do_test(dirpath)
+    local alldirs={}
+    local allfiles={}
+	for file in lfs.dir(dirpath) do
+        if file ~= "." and file ~= ".." then
+            local f = dirpath..'/'..file
+            local attr = lfs.attributes (f)
+            assert (type(attr) == "table")
+            if attr.mode == "directory" then
+                table.insert(alldirs,dirpath..'/'..file)
+            end
+        end
+    end
+    
+    for _id,_dirpath in pairs(alldirs) do
+        for file in lfs.dir(_dirpath) do
+            table.insert(allfiles,_dirpath..'/'..file)
+        end
+    end
+    
+    local tot=table.getn(allfiles)
+    local idx=0
+    for idx,path in pairs(allfiles) do
+        HippoParseFile(path)
+        idx=idx+1
+        coroutine.yield(stresstest_co,idx/tot)   
+    end
+end
+
+
+function idle_cb()
+	local b,t,percent=coroutine.resume(stresstest_co)
+	prog_control.VALUE =percent
+	if(not b) then
+	    OutPutInfo("测试意外退出，原因：" .. tostring(t))
+	end
+    if(coroutine.status(stresstest_co)=="dead") then
+        iup.SetIdle(nil)
+    end
+    return iup.DEFAULT
+end
+
 
 function menu_item_test:action()
---[[
-    local filedlg = iup.filedlg{
-        dialogtype = "DIR",
-        title = "选择要压力测试的目录", 
-        directory=".\\"} 
-    filedlg:popup (iup.ANYWHERE, iup.ANYWHERE)
-	status = filedlg.status
-	if status == "0" then
-		dotest_dir(filedlg.value)
-	end
---]]
     local res,dirpath=iup.GetParam("要压力测试的目录", nil,"填写目录: %s\n","")
     if(res==true) then
         ClearTree(tree_control)
-        local allfiles={}
-        get_all_files(dirpath,allfiles)
-        local co=coroutine.create(dotest_dir)
-        local b,t,percent--=coroutine.resume(co,allfiles)
-        while coroutine.status(co)~="dead" do
-            prog_control.VALUE =percent
-	        b,t,percent=coroutine.resume(co,allfiles)
-	        if(not b) then
-	            OutPutInfo("测试意外退出，原因：" .. tostring(t))
-	        end
-       end
-       local msg=string.format("完成Test,目录:%s,共处理文件数量%d",dirpath,table.getn(allfiles))
+        stresstest_co=coroutine.create(sync_do_test)
+        local b,t=coroutine.resume(stresstest_co,dirpath)
+        iup.SetIdle(idle_cb)
+
+       local msg=string.format("完成Test,目录:%s,共处理文件数量%d",dirpath,stress_result_num)
        OutPutInfo(msg)
     end
 
@@ -214,11 +229,6 @@ local tree_r_copypath=iup.submenu{
     ;title="CopyPath"
   }
 
-iup.menu{
-      iup.item{title="拷贝路径(/)"},
-      iup.item{title="拷贝路径(\\)"}
-    } 
-
 local tree_rmenu = iup.menu {
 tree_r_expanded,
 tree_r_collapsed,
@@ -232,12 +242,24 @@ iup.separator{},
 tree_r_copypath
 }
 
+--拷贝路径(/)
 function subitem1:action()
-
+    local title_id_str="TITLE" .. tostring(tree_control.value)
+    local text=tree_control[title_id_str]
+    --转换斜杠
+    local copypath=string.gsub(text,"\\","/")
+    
+    CopyStringToClipBoard(copypath)
 end
 
+--拷贝路径(\\)
 function subitem2:action()
+    local title_id_str="TITLE" .. tostring(tree_control.value)
+    local text=tree_control[title_id_str]
+    CopyStringToClipBoard(text)
 end
+
+
 
 function tree_control:rightclick_cb(id)
   tree_control.value = id
@@ -280,10 +302,14 @@ end
 
 
 --dialog
-dlg = iup.dialog{ container; title = "HippoResInfo", menu=menu_bar,dragdrop=1}
+dlg = iup.dialog{ container; title = "Hippo Resource Walker", menu=menu_bar,dragdrop=1}
 dlg:showxy (iup.CENTER, iup.CENTER)
 
-
+--打印一下当前运行信息
+OutPutInfo("arg[-1]=" .. tostring(arg[-1]))
+OutPutInfo("arg[0]=" .. tostring(arg[0]))
+OutPutInfo("arg[1]=" .. tostring(arg[1]))
+OutPutInfo("")
 
 --call back of dialog's dragdrop
 

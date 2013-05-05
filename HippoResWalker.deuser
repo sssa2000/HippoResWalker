@@ -11,4 +11,12 @@
     <local_path></local_path>
     <aux_project_path></aux_project_path>
   </scc>
+  <files>
+    <file>
+      <filename>HippoResInfo_GUI.lua</filename>
+      <breakpoint>
+        <line>167</line>
+      </breakpoint>
+    </file>
+  </files>
 </project>

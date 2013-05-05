@@ -61,6 +61,7 @@ function GetResRelativeFile_DML(dmlPath)
 	--解析材质三元组部分
 	ParseFile_MatInfo(t,res_table)
 
+    io.close()
 	return res_table,res_reson
 end
 
