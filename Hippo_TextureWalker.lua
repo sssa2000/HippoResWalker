@@ -1,5 +1,5 @@
-dofile( "ProcessRelativePath.lua")
-dofile( "OutPutInfo.lua")
+dofile( scriptdir .. "ProcessRelativePath.lua")
+dofile( scriptdir .. "OutPutInfo.lua")
 local _currentProcessFileName=nil
 
 --[[

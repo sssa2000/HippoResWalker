@@ -1,9 +1,9 @@
-
+package.cpath = package.cpath..";"..scriptdir.."?.dll;"
 require "io"
 require "LuaXML"
-dofile( "Hippo_TplWalker.lua")
-dofile( "Hippo_TextureWalker.lua")
-dofile( "ProcessRelativePath.lua")
+dofile( scriptdir .. "Hippo_TplWalker.lua")
+dofile( scriptdir .. "Hippo_TextureWalker.lua")
+dofile( scriptdir .. "ProcessRelativePath.lua")
 
 local _maskmatfn="D:\\alienbrainWork\\QQX5-2\\QQX5-2_Exe\\resources\\art\\role\\bodypart\\female\\trousers\\116105002\\116105002.mat"
 local _commonmatfn="D:\\alienbrainWork\\QQX5-2\\QQX5-2_Exe\\resources\\art\\ui\\creatplayer\\1440_900_x52_ui_creat3.mat"
@@ -138,7 +138,8 @@ function GetResRelativeFile_Mat(matfn,matname)
 		local mat_xml_elem=xfile[matidx]
 		local bIsMask=(mat_xml_elem.MaskFileName ~= nil)
 		if(matname==nil or matname==mat_xml_elem.MaterialName) then
-		    local ballname="²ÄÖÊÇò: " .. mat_xml_elem.MaterialName
+		    SetCurFn(matfn)
+            local ballname="²ÄÖÊÇò: " .. mat_xml_elem.MaterialName
 		    res_table[ballname]=parse_singlemat(mat_xml_elem,bIsMask)        
 		end
 	end

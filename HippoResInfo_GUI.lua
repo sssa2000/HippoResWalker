@@ -1,11 +1,17 @@
+--package.cpath = package.cpath..";./?.dll;./?.so;../lib/?.so;../lib/vc_dll/?.dll;../lib/bcc_dll/?.dll;../lib/mingw_dll/?.dll;"
+--local guidir=string.sub(arg[0],1,)
+scriptdir,scriptfile=string.match(arg[0],"(.+\\)(.-\.lua)")
+package.cpath = package.cpath..";"..scriptdir.."?.dll;"
 
 require( "iuplua" )
 require( "iupluacontrols" )
 require( "HippoResWalkerDll")
-dofile( "HippoResWalker.lua" )
-dofile( "OutPutInfo.lua")
+dofile( scriptdir .. "HippoResWalker.lua" )
+dofile( scriptdir .. "OutPutInfo.lua")
 
 local shell_arg=arg[1]
+
+--iup.Message ("HippoResWalker", "Press the button")
 
 
 --gui lay out

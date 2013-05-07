@@ -1,7 +1,7 @@
-dofile( "OutPutInfo.lua")
-dofile( "ProcessRelativePath.lua")
-dofile( "Hippo_DmlWalker.lua")
-dofile( "Hippo_MatWalker.lua")
+dofile( scriptdir .. "OutPutInfo.lua")
+dofile( scriptdir .. "ProcessRelativePath.lua")
+dofile( scriptdir .. "Hippo_DmlWalker.lua")
+dofile( scriptdir .. "Hippo_MatWalker.lua")
 --[[
 解析eff文件中的相关文件
 eff中只可能包含2种文件：shader和dml
@@ -22,6 +22,7 @@ function GetResRelativeFile_Eff(efffn)
 	--查找所有的shader
 	local shader_res={}
 	for ballname,mfn in string.gmatch(effcontent,"<Shader value=\"(.-)\" />\n.-<MatFileName value=\"(.-)\".-/>") do
+	    SetCurFn(efffn)
 	    local matfullpath=getFullPathFromRelpath( mfn,GetCurFn(),true)
 	    local shadertitle=string.format("材质球:%s;文件名:%s",ballname,matfullpath)
 		shader_res[shadertitle]=GetResRelativeFile_Mat(matfullpath,ballname)
@@ -32,6 +33,7 @@ function GetResRelativeFile_Eff(efffn)
     for dmlfn in string.gmatch(effcontent,"<mParticleModelName.-value=\"(.-)\".-/>") do
 
     	if(string.len(dmlfn)>4) then
+    	    SetCurFn(efffn)
     		local dmlfullpath=getFullPathFromRelpath( dmlfn,GetCurFn(),true)
 			local dmlparseres=GetResRelativeFile_DML(dmlfullpath)
     		table.insert(dml_res,dmlparseres)

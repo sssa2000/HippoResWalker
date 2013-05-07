@@ -1,7 +1,7 @@
-dofile( "OutPutInfo.lua")
-dofile( "Hippo_MatWalker.lua")
-dofile( "ProcessRelativePath.lua")
-dofile( "Hippo_DmlWalker.lua")
+dofile( scriptdir .. "OutPutInfo.lua")
+dofile( scriptdir .. "Hippo_MatWalker.lua")
+dofile( scriptdir .. "ProcessRelativePath.lua")
+dofile( scriptdir .. "Hippo_DmlWalker.lua")
 
 function GetResRelativeFile_Chr(chrPath)
 	local res_table={}

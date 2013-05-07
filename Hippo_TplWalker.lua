@@ -1,8 +1,8 @@
 require "io"
 require "LuaXML"
-dofile( "ProcessRelativePath.lua")
-dofile( "OutPutInfo.lua")
-dofile( "Hippo_TextureWalker.lua")
+dofile( scriptdir .. "ProcessRelativePath.lua")
+dofile( scriptdir .. "OutPutInfo.lua")
+dofile( scriptdir .. "Hippo_TextureWalker.lua")
 --[[
 解析tpl文件中的相关文件
 返回table，table是一个含有贴图文件名的数组

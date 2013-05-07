@@ -1,6 +1,6 @@
-dofile( "OutPutInfo.lua")
-dofile( "Hippo_MatWalker.lua")
-dofile( "ProcessRelativePath.lua")
+dofile( scriptdir .. "OutPutInfo.lua")
+dofile( scriptdir .. "Hippo_MatWalker.lua")
+dofile( scriptdir .. "ProcessRelativePath.lua")
 
 
 

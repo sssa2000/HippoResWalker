@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <project>
-  <command>C:\Program Files (x86)\Lua\5.1\wlua.exe</command>
-  <working_directory>C:\Users\sssa2000\Desktop\HippoResWalker\</working_directory>
+  <command>C:\Program Files\Lua\5.1\wlua.exe</command>
+  <working_directory>F:\Crytek\CryENGINE3</working_directory>
   <symbols_directory></symbols_directory>
-  <command_arguments>C:\Users\sssa2000\Desktop\HippoResWalker\HippoResInfo_GUI.lua</command_arguments>
+  <command_arguments>F:\HippoResWalker\HippoResInfo_GUI.lua</command_arguments>
   <scc>
     <provider></provider>
     <user></user>
@@ -11,12 +11,4 @@
     <local_path></local_path>
     <aux_project_path></aux_project_path>
   </scc>
-  <files>
-    <file>
-      <filename>HippoResInfo_GUI.lua</filename>
-      <breakpoint>
-        <line>167</line>
-      </breakpoint>
-    </file>
-  </files>
 </project>

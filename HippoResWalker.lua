@@ -1,14 +1,14 @@
 --[[
 gui交互的总入口
 --]]
-dofile("Hippo_DmlWalker.lua")
-dofile("Hippo_MatWalker.lua")
-dofile("Hippo_TplWalker.lua")
-dofile("Hippo_ChrWalker.lua")
-dofile("Hippo_EffWalker.lua")
-dofile("Hippo_SpeWalker.lua")
-dofile("Hippo_BptWalker.lua")
-dofile( "OutPutInfo.lua")
+dofile(scriptdir .. "Hippo_DmlWalker.lua")
+dofile(scriptdir .. "Hippo_MatWalker.lua")
+dofile(scriptdir .. "Hippo_TplWalker.lua")
+dofile(scriptdir .. "Hippo_ChrWalker.lua")
+dofile(scriptdir .. "Hippo_EffWalker.lua")
+dofile(scriptdir .. "Hippo_SpeWalker.lua")
+dofile(scriptdir .. "Hippo_BptWalker.lua")
+dofile(scriptdir .. "OutPutInfo.lua")
 require "lfs"
 --[[
 解析一个文件

@@ -1,9 +1,9 @@
-dofile( "OutPutInfo.lua")
-dofile( "ProcessRelativePath.lua")
-dofile( "Hippo_DmlWalker.lua")
-dofile( "Hippo_ChrWalker.lua")
-dofile( "Hippo_MatWalker.lua")
-dofile( "HIppo_EffWalker.lua")
+dofile( scriptdir .. "OutPutInfo.lua")
+dofile( scriptdir .. "ProcessRelativePath.lua")
+dofile( scriptdir .. "Hippo_DmlWalker.lua")
+dofile( scriptdir .. "Hippo_ChrWalker.lua")
+dofile( scriptdir .. "Hippo_MatWalker.lua")
+dofile( scriptdir .. "HIppo_EffWalker.lua")
 
 
 function ParseEntityLine(entityline,restable)
@@ -62,7 +62,7 @@ function GetResRelativeFile_Spe(spefn)
 	
 	--找到所有的entity行
 	for entityline in string.gmatch(specontent,"<Entity (.-)/>") do
-	    print(entityline)
+	    SetCurFn(spefn)
         ParseEntityLine(entityline,restable)
 	end
 
