@@ -57,7 +57,10 @@ function getFullPathFromRelpath(relpath,rootRespath,bProcessNotExisitFile)
 	relpath_validator(relpath)
 	fullpath_validator(rootRespath)
 
+    --转化斜杠
+    relpath=string.gsub(relpath,"/","\\")
     local res=relpath
+ 
     --捕获resources之前的字符串
     local t00=string.match(rootRespath,"(.-[/\\])resources[/\\].+")
 	local t01=string.match(rootRespath,"(.-[/\\])data[/\\].+")

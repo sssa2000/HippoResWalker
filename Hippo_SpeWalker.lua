@@ -39,7 +39,8 @@ function ParseEntityLine(entityline,restable)
             return
         end
     end
-    restable[idxstr]=tmptable
+    restable[fullpath]=tmptable
+    --table.insert(restable,tmptable)
 end
 --[[
 解析 spe 文件中的相关文件

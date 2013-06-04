@@ -284,11 +284,13 @@ end
 function tree_r_opendir:action()
     local title_id_str="TITLE" .. tostring(tree_control.value)
     local text=tree_control[title_id_str]
-    local dirpath=string.match(text,"(.+[/\\])")
+    local dirpath=string.match(text,".-(.:[/\\].+[/\\])")--string.match(text,"(.+[/\\])")
+    local filepath=string.match(text,".-(.:[/\\].+)")--string.match(text,"(.+[/\\])")
     if(dirpath~=nil) then
         --os.execute("start " .. dirpath)
         --使用explorer是为了能够在shell中定位到文件，否则使用start即可
-        os.execute("explorer /select, " .. text) 
+        OutPutInfo(dirpath)
+        os.execute("explorer /select, " .. filepath) 
     end
     --OutPutInfo(dirpath)
 end
@@ -296,7 +298,8 @@ end
 function tree_r_openfile:action()
     local title_id_str="TITLE" .. tostring(tree_control.value)
     local text=tree_control[title_id_str]
-    os.execute("start " .. text)
+    local filepath=string.match(text,".-(.:[/\\].+)")--string.match(text,"(.+[/\\])")
+    os.execute("start " .. filepath)
 end
 
 function tree_r_viewfile:action()
