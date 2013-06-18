@@ -78,7 +78,8 @@ function parse_singlemat(mat_xml_elem,bIsMask)
 	
 	if(bIsMask) then
 	    --mask贴图
-	    singlemat_table["MaskTexture"]=getFullPathFromRelpath(mat_xml_elem.MaskFileName,GetCurFn(),true)
+	    local mask_texture_path=getFullPathFromRelpath(mat_xml_elem.MaskFileName,GetCurFn(),false)
+	    singlemat_table["MaskTexture"]=GetResRelativeFile_Texture(mask_texture_path) -- deal dds issue
 	    local n=table.getn(mat_xml_elem)
 	    --遍历每个结点，找到mask通道
         for i=1,n,1 do

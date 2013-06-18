@@ -33,7 +33,7 @@ function GetResRelativeFile_Chr(chrPath)
 	ParseChrDmlSection(filecontent,res_table,"BV")
 	
 	--解析材质三元组部分
-	ParseFile_MatInfo(filecontent,res_table)
+	ParseFile_MatInfo(chrPath,filecontent,res_table)
 	
 	io.close()
 	return res_table,res_reson

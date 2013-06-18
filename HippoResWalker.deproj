@@ -1,6 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <project>
   <file>
+    <filename>HippoResInfo.lua</filename>
+  </file>
+  <file>
     <filename>HippoResInfo_GUI.lua</filename>
   </file>
   <file>
@@ -23,6 +26,9 @@
   </file>
   <file>
     <filename>Hippo_SpeWalker.lua</filename>
+  </file>
+  <file>
+    <filename>Hippo_TextureWalker.lua</filename>
   </file>
   <file>
     <filename>Hippo_TplWalker.lua</filename>

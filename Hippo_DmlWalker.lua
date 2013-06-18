@@ -19,19 +19,23 @@ end
 
 --[[
 解析dml，chr中的材质三元组部分
-参数：fileContent：文件的内容
+参数：
+parentFilepath:dml或者chr的路径，这个参数将用来构造完整的mat路径
+fileContent：文件的内容
+res_table:返回的结果
 
 返回：
 返回值1：table,table的结构是这样的：table中有多个table(subTable),
 		subTable有3个字段：MeshName，MatFileName，MatBallName
 --]]
-function ParseFile_MatInfo(fileContent,res_table)
+function ParseFile_MatInfo(parentFilepath,fileContent,res_table)
 	local mattable={}
 	for meshname,matfilename,ballname in string.gmatch(fileContent,"%[SubEntity%]\n(.-)\n(.-)\n(.-)\n") do
 		local matball={}
 		matball["MeshName"]="网格: " .. meshname .. ",材质球: " .. ballname
 		--matball["MatBallName"]="材质球: " .. ballname
 		local matfiletable={}
+		SetCurFn(parentFilepath)
 		local matfullpath=getFullPathFromRelpath(matfilename,GetCurFn(),true)
 		matfiletable[matfullpath]=GetResRelativeFile_Mat(matfullpath,ballname)
 		matball["MatFileName"]=matfiletable
@@ -59,7 +63,7 @@ function GetResRelativeFile_DML(dmlPath)
 	ParseChrDmlSection(t,res_table,"GEOMETRY MESH")
 	
 	--解析材质三元组部分
-	ParseFile_MatInfo(t,res_table)
+	ParseFile_MatInfo(dmlPath,t,res_table)
 
     io.close()
 	return res_table,res_reson

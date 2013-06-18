@@ -11,12 +11,4 @@
     <local_path></local_path>
     <aux_project_path></aux_project_path>
   </scc>
-  <files>
-    <file>
-      <filename>Hippo_DmlWalker.lua</filename>
-      <breakpoint>
-        <line>34</line>
-      </breakpoint>
-    </file>
-  </files>
 </project>
