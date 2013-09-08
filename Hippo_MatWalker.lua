@@ -63,6 +63,39 @@ function parse_mask_channel(channelname,channel_xml_elem,res_table)
     res_table[channelname]=channelres
 end
 
+--解析一个材质球中的手动lod的信息
+--参数mat_xml_elem：材质球的xml结点
+--参数singlemat_table：存放结果的table
+function parse_mtlod_files(mat_xml_elem,singlemat_table)
+    --找到MaterialLod结点，一个材质球只可能有一个MaterialLod结点
+    local mtlodtable={}
+    local n=table.getn(mat_xml_elem)
+    --遍历每个结点，找到MaterialLod结点
+    for i=1,n,1 do
+        local MaterialLodElem=mat_xml_elem[i]
+        if (MaterialLodElem[0]=="MaterialLod") then
+            --最多只会有两个lod
+            for i=1,2,1 do
+                local matlod_elem=MaterialLodElem[i]
+                if(matlod_elem~=nil) then
+                    local lodmatfile=getFullPathFromRelpath(matlod_elem["mat"],GetCurFn(),false)
+                    local lodmatball=matlod_elem["matball"]
+                    local ballname="材质球: " .. lodmatball
+                    local singlemtball_table={}
+                    local lodcontenttable=GetResRelativeFile_Mat(lodmatfile,lodmatball)
+                    
+                    singlemtball_table["File:"]=lodmatfile
+                    singlemtball_table[ballname]=lodcontenttable
+                    
+                    table.insert(mtlodtable,singlemtball_table)
+                    --mtlodtable[i]={singlemtball_table}
+                end
+            end
+        end
+    end
+    singlemat_table["MT_LOD"]=mtlodtable
+end
+
 local maskchannel_dic={}
 maskchannel_dic["MaskStand"]=1
 maskchannel_dic["MaskChannelR"]=1
@@ -101,6 +134,9 @@ function parse_singlemat(mat_xml_elem,bIsMask)
 		parse_mat_texture(mat_xml_elem,singlemat_table)
 	end
 
+    --解析手动lod的相关文件
+    parse_mtlod_files(mat_xml_elem,singlemat_table)
+    
 	return singlemat_table
 
 end
